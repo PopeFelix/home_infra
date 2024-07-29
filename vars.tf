@@ -3,11 +3,17 @@
 # Set your public SSH key here
 variable "ssh_key" {
   default = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJDjuXJsm20610XQGaGgsagEupVlfzYMorJXrNo1u7Gx took@oscar"
+variable "pm_tls_insecure" {
+  description = "Set to true to ignore certificate errors"
+  type        = bool
+  default     = true
 }
+
 #Establish which Proxmox host you'd like to spin a VM up on
 variable "proxmox_host" {
     default = "thebeast"
 }
+
 #Specify which template name you'd like to use
 variable "template_name" {
 #    default = "test1"
