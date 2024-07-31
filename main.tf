@@ -1,7 +1,7 @@
 resource "proxmox_vm_qemu" "cloudinit-test" {
-    name = "terraform-cloudinit-test1"
+    name = var.vm_name
     desc = "Testing Terraform and cloud-init"
-
+    depends_on = [ null_resource.cloud_init_test1 ]
     # Node name has to be the same name as within the cluster
     # this might not include the FQDN
     target_node = var.proxmox_host
@@ -43,12 +43,13 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     network {
         model = "virtio"
         bridge = var.nic_name
+	tag = -1
     }
 
     # Setup the ip address using cloud-init.
     boot = "order=scsi0"
     # Keep in mind to use the CIDR notation for the ip.
-    ipconfig0 = "ip=dhcp,ip6=dhcp"
+    ipconfig0 = "ip=192.168.1.80/24,gw=192.168.1.1,ip6=dhcp"
     skip_ipv6 = true
 
     lifecycle {
@@ -58,5 +59,5 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
         network
       ]
     }
+    cicustom = "user=local:snippets/cloud_init_test1.yml"
 }
-
