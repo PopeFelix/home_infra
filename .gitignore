@@ -41,3 +41,4 @@ plan.out
 .terraform.lock.hcl
 *.old
 *.log
+.venv
