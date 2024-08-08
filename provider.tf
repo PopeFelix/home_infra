@@ -5,6 +5,10 @@ terraform {
       #latest version as of 16 July 2024
       version = "3.0.1-rc3"
     }
+    ansible = {
+      version = "~> 1.3.0"
+      source  = "ansible/ansible"
+    }
   }
 }
 
