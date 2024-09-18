@@ -1,0 +1,33 @@
+---
+- name: Provision fileservers
+  hosts: fileservers
+  remote_user: root
+
+  tasks:
+  - name: Add Python3
+    community.general.apk:
+      name: python3
+      state: present
+      update_cache: yes
+  - name: Add Samba
+    community.general.apk:
+      name: samba
+      state: present
+      update_cache: yes
+  - name: Ensure "media_write" group exists
+    ansible.builtin.group:
+      name: media_write
+      state: present
+      gid: 1001 # needs to map to same GID on Proxmox
+  - name: Ensure "media_write" user exists
+    ansible.builtin.user:
+      name: media_write
+      state: present
+      uid: 1001 # needs to map to same UID on Proxmox
+  - name: Copy SMB config file
+    ansible.builtin.copy:
+      src: ./smb.conf
+      dest: /etc/samba/smb.conf
+      owner: root
+      group: root
+      mode: '0644'
