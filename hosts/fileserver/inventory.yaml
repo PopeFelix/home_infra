@@ -1,0 +1,4 @@
+ungrouped:
+  hosts:
+    sso.scurrilous.foo:
+      ssh_extra_args: '-o IdentitiesOnly=yes'
