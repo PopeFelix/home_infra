@@ -9,6 +9,7 @@ keyed_groups:
   - key: proxmox_tags_parsed
     separator: ""
     prefix: group
-groups:
-  util: "'fileserver' in (proxmox_tags_parsed|list)"
+groups: 
+  plex: "'plex' in (proxmox_tags_parsed|list)"
 want_proxmox_nodes_ansible_host: true
+

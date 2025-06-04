@@ -1,0 +1,82 @@
+---
+- name: Provision Plex server
+  hosts: plex-0
+  remote_user: aurelia
+
+  tasks:
+  - name: Update packages
+    become: true
+    ansible.builtin.apt:
+      autoclean: true
+      autoremove: true
+      update-cache: true
+      upgrade: "yes"
+
+  - name: Update apt and install ca-certificates and curl
+    apt:
+      name: [ca-certificates,curl]
+      state: latest
+      update_cache: true
+
+  - name: Set up /etc/apt/keyrings
+    ansible.builtin.command: install -m 0755 -d /etc/apt/keyrings
+ 
+  - name: Add Docker apt repository key.
+    ansible.builtin.get_url:
+      url: "https://download.docker.com/linux/debian/gpg"
+      dest: /etc/apt/keyrings/docker.asc
+      mode: '0644'
+      force: true
+
+  - name: Add repo using key from URL
+    deb822_repository:
+      name: docker 
+      types: deb
+      uris: https://download.docker.com/linux/debian
+      suites: bookworm
+      components: stable
+      architectures: amd64
+      signed_by: /etc/apt/keyrings/docker.asc
+
+  - name: Update apt and install docker-ce
+    apt:
+      name: [docker-ce,docker-ce-cli,containerd.io, docker-buildx-plugin, docker-compose-plugin,docker-compose]
+      state: latest
+      update_cache: true
+  
+  - name: Add cifs-utils
+    apt:
+      name: [cifs-utils]
+      state: latest
+      update_cache: true
+
+  - name: Add network mount to fstab
+    ansible.builtin.blockinfile:
+      block: "{{ lookup('ansible.builtin.file', './files/fstab') }}"
+      path: /etc/fstab
+      backup: yes
+
+  - name: Copy SMB credentials
+    ansible.builtin.copy:
+      src: ./files/smbcredentials
+      dest: /root/.smbcredentials
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: Copy Plex Docker compose file
+    ansible.builtin.copy:
+      src: ./files/plex-docker-compose.yaml
+      dest: /root/plex-docker-compose.yaml
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: Creates directory
+    ansible.builtin.file:
+      path: /opt/plex/Library/Application Support
+      state: directory
+      owner: root
+      group: root
+      mode: 0775
+      recurse: yes

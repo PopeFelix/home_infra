@@ -10,5 +10,5 @@ keyed_groups:
     separator: ""
     prefix: group
 groups:
-  util: "'fileserver' in (proxmox_tags_parsed|list)"
+  util: "'util' in (proxmox_tags_parsed|list)"
 want_proxmox_nodes_ansible_host: true

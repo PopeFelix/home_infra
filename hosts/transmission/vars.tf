@@ -10,7 +10,7 @@ variable "gateway" {
 
 variable "ip_addresses"  {
   type = list(string)
-  default = ["192.168.1.60/24"]
+  default = ["192.168.1.61/24"]
 }
 
 variable "pm_tls_insecure" {

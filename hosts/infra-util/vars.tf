@@ -10,7 +10,7 @@ variable "gateway" {
 
 variable "ip_addresses"  {
   type = list(string)
-  default = ["192.168.1.60/24"]
+  default = ["192.168.1.6/24"]
 }
 
 variable "pm_tls_insecure" {
@@ -26,7 +26,7 @@ variable "proxmox_host" {
 
 #Specify which template name you'd like to use
 variable "template_name" {
-    default = "debian-12-base"
+    default = "ubuntu-2404-base"
 }
 #Establish which nic you would like to utilize
 variable "nic_name" {

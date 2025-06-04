@@ -1,0 +1,1 @@
+//fileserver-0/storage  /mnt/storage    cifs credentials=/root/.smbcredentials,uid=1000,gid=1001,dir_mode=0774,file_mode=0664 0 0

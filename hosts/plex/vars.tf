@@ -10,7 +10,7 @@ variable "gateway" {
 
 variable "ip_addresses"  {
   type = list(string)
-  default = ["192.168.1.60/24"]
+  default = ["192.168.1.10/24"]
 }
 
 variable "pm_tls_insecure" {
@@ -26,11 +26,12 @@ variable "proxmox_host" {
 
 #Specify which template name you'd like to use
 variable "template_name" {
-    default = "debian-12-base"
+    default = "ubuntu-2404-base"
 }
+
 #Establish which nic you would like to utilize
 variable "nic_name" {
-    default = "vmbr0"
+    default = "vmbr1"
 }
 
 # Number of VMs to spin up
@@ -52,11 +53,11 @@ variable "username" {
 }
 
 variable "memory" {
-  default = 4096
+  default = 32768
 }
 
 variable "cores" {
-  default = 4
+  default = 24
 }
 
 variable "nameserver" {
@@ -64,7 +65,7 @@ variable "nameserver" {
 }
 
 variable "disk_size" {
-  default = "32G"
+  default = "128G"
 }
 
 variable "storage_location" {
