@@ -1,0 +1,25 @@
+---
+- name: Provision utility boxen
+  hosts: util
+  remote_user: aurelia
+
+  tasks:
+#  - name: SSH config
+#    community.general.ssh_config:
+#      user: aurelia
+
+  - name: Update packages
+    become: true
+    ansible.builtin.apt:
+      autoclean: true
+      autoremove: true
+      update-cache: true
+      upgrade: "yes"
+
+  - name: Add distrobuilder
+    become: true
+    become_user: root
+    community.general.snap:
+      classic: true
+      name: distrobuilder
+      state: present
