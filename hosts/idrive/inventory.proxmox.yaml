@@ -1,0 +1,15 @@
+plugin: community.general.proxmox
+url: "{{ lookup('ansible.builtin.ini', 'url', section='proxmox', file='ansible.ini') }}"
+token_id: "{{ lookup('ansible.builtin.ini', 'token_id', section='proxmox', file='ansible.ini') }}"
+token_secret: "{{ lookup('ansible.builtin.ini', 'token_secret', section='proxmox', file='ansible.ini') }}"
+user: "{{ lookup('ansible.builtin.ini', 'user', section='proxmox', file='ansible.ini') }}"
+want_facts: true
+validate_certs: false
+keyed_groups:
+  - key: proxmox_tags_parsed
+    separator: ""
+    prefix: group
+groups: 
+  idrive: "'idrive' in (proxmox_tags_parsed|list)"
+want_proxmox_nodes_ansible_host: true
+
