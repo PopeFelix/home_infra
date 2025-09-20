@@ -1,0 +1,57 @@
+---
+- name: Provision pihole
+  hosts: pihole
+  remote_user: aurelia
+
+  tasks:
+  - name: Update packages
+    become: true
+    ansible.builtin.apt:
+      autoclean: true
+      autoremove: true
+      update-cache: true
+      upgrade: "yes"
+
+  - name: Update apt and install ca-certificates and curl
+    apt:
+      name: [ca-certificates,curl]
+      state: latest
+      update_cache: true
+
+  - name: Set up /etc/apt/keyrings
+    ansible.builtin.command: install -m 0755 -d /etc/apt/keyrings
+ 
+  - name: Add Docker apt repository key.
+    ansible.builtin.get_url:
+      url: "https://download.docker.com/linux/debian/gpg"
+      dest: /etc/apt/keyrings/docker.asc
+      mode: '0644'
+      force: true
+
+  - name: Add repo using key from URL
+    deb822_repository:
+      name: docker 
+      types: deb
+      uris: https://download.docker.com/linux/debian
+      suites: bookworm
+      components: stable
+      architectures: amd64
+      signed_by: /etc/apt/keyrings/docker.asc
+
+  - name: Update apt and install docker-ce
+    apt:
+      name: [docker-ce,docker-ce-cli,containerd.io, docker-buildx-plugin, docker-compose-plugin,docker-compose]
+      state: latest
+      update_cache: true
+  
+
+  - name: Copy Plex Docker compose file
+    ansible.builtin.copy:
+      src: ./files/pihole-docker-compose.yaml
+      dest: /root/pihole-docker-compose.yaml
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: Install pihole
+    ansible.builtin.command: curl -sSL https://install.pi-hole.net | bash
