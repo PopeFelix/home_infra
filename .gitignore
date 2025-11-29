@@ -42,3 +42,5 @@ plan.out
 *.old
 *.log
 .venv
+
+.DS_Store
