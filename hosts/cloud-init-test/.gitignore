@@ -1,0 +1,6 @@
+iterraform.tfvars
+terraform-plugin-proxmox.log
+ansible.ini
+files/smbcredentials
+terraform.tfstate
+terraform.tfvars
