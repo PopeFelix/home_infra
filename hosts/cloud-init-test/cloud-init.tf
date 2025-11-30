@@ -1,6 +1,6 @@
 # Source the Cloud Init Config file
-data "template_file" "cloud_init_test1" {
-  template  = "${file("${path.module}/files/test1.cloud_config")}"
+data "template_file" "cloud_init_cfg" {
+  template  = "${file("${path.module}/files/cloud_config")}"
 
   vars = {
     ssh_key = file("~/.ssh/id_ed25519.pub")
@@ -10,13 +10,13 @@ data "template_file" "cloud_init_test1" {
 }
 
 # Create a local copy of the file, to transfer to Proxmox
-resource "local_file" "cloud_init_test1" {
-  content   = data.template_file.cloud_init_test1.rendered
-  filename  = "${path.module}/files/user_data_cloud_init_test1.cfg"
+resource "local_file" "cloud_init_cfg" {
+  content   = data.template_file.cloud_init_cfg.rendered
+  filename  = "${path.module}/files/${var.vm_name}-user_data_cloud_init.cfg"
 }
 
 # Transfer the file to the Proxmox Host
-resource "null_resource" "cloud_init_test1" {
+resource "null_resource" "cloud_init_cfg" {
   connection {
     type    = "ssh"
     user    = "root"
@@ -25,8 +25,8 @@ resource "null_resource" "cloud_init_test1" {
   }
 
   provisioner "file" {
-    source       = local_file.cloud_init_test1.filename
-    destination  = "/var/lib/vz/snippets/cloud_init_test1.yml"
+    source       = local_file.cloud_init_cfg.filename
+    destination  = "/var/lib/vz/snippets/${var.vm_name}-cloud_init.yml"
   }
 }
 

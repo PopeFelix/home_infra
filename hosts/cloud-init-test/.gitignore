@@ -2,5 +2,6 @@ iterraform.tfvars
 terraform-plugin-proxmox.log
 ansible.ini
 files/smbcredentials
+files/cloud-init-test1-user_data_cloud_init.cfg
 terraform.tfstate
 terraform.tfvars

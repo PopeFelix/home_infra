@@ -1,7 +1,7 @@
 resource "proxmox_vm_qemu" "cloudinit-test" {
     name = var.vm_name
     desc = "Testing Terraform and cloud-init"
-    depends_on = [ null_resource.cloud_init_test1 ]
+    depends_on = [ null_resource.cloud_init_cfg ]
     # Node name has to be the same name as within the cluster
     # this might not include the FQDN
     target_node = var.proxmox_host
